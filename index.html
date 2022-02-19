@@ -1,0 +1,119 @@
+<!doctype html>
+
+<html lang="en">
+
+	<head>
+
+		<meta charset="utf-8">
+
+		<title>AJAX/PHP/CURL/JSON example</title>
+		<meta name="description" content="AJAX/PHP/CURL/JSON example">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta name="author" content="Paddy Evans">
+		<link rel="stylesheet" href="libs/bootstrap/css/bootstrap.min.css">		
+		<link rel="stylesheet" href="libs/css/style.css">	
+		<link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A==" crossorigin="" />
+		
+		<!-- easybutton -->
+		<link rel="stylesheet" href="libs/css/easy-button.css">
+
+		<!-- fontawesome cdn -->
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+		<link rel="stylesheet" href="http://code.ionicframework.com/ionicons/1.5.2/css/ionicons.min.css">
+		<link rel="stylesheet" href="libs/css/leaflet.awesome-markers.css">
+		<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js" integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA==" crossorigin=""></script>
+<!-- <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+   integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+   crossorigin=""/>
+   <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+   integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+   crossorigin=""></script> -->
+	</head>
+
+	<body>				
+		<nav class="navbar navbar-expand-lg navbar-light bg-light" style="float: right;">
+			<div class="container-fluid">
+			 
+				<form class="d-flex">
+					<!-- <select class="form-select" aria-label="Default select example">
+						<option value="IN">India</option>
+						<option value="UK">UK</option>
+						<option value="US">USA</option>
+						<option value="AS">AUS</option>
+					  </select> -->
+					  <select id="countryselect" name="countryselect" class="textfeld" onchange="findAddress(document.getElementById('countryselect').value);return false" onfocus="">
+
+						<option value="">Select a country....</option> 
+		  			</select>
+				</form>
+			  </div>
+			</div>
+		  </nav>		 
+		  <div style="">			
+		  <div id="map"></div>		  
+		  
+		</div>
+
+	<!-- Button trigger modal -->
+<!-- <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+	LAUNCH COUNTRY DETAILS
+  </button> -->
+	
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+	  <div class="modal-content">
+		<div class="modal-header">
+		  <h5 class="modal-title" id="exampleModalLabel">COUNTRY DETAILS:</h5>
+		  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+		</div>
+		<div class="modal-body">
+			<div id="weather">
+				<!-- <h4 class="text-center">COUNTRY DETAILS: </h4> -->
+				<!-- <div class="text-center"><span>Country: </span><span id="country"></span></div>
+				<div class="text-center"><span>Capital: </span><span id="capital"></span></div>
+				<div class="text-center"><span>Population: </span><span id="population"></span></div>
+				<div class="text-center"><span>Currency: </span><span id="currency"></span></div>
+				<div class="text-center"><span>Temp: </span><span id="temperature"></span></div>
+				<div class="text-center"><span>Timezone: </span><span id="timezone"></span></div>  
+				<div class="text-center"><span>Wind speed: </span><span id="windspeed"></span></div> -->
+				<ul class="list-group">					
+					<li class="list-group-item"><span class="fw-bold">Country: </span><span id="country"></span></li>
+					<li class="list-group-item"><span class="fw-bold">Capital: </span><span id="capital"></span></li>
+					<li class="list-group-item"><span class="fw-bold">Population: </span><span id="population"></span></li>
+					<li class="list-group-item"><span class="fw-bold">Currency: </span><span id="currency"></span></li>
+					<li class="list-group-item"><span class="fw-bold">Exchange Rate: </span><span id="exchangeRate"></span></li>
+					<li class="list-group-item"><span class="fw-bold">Temp: </span><span id="temperature"></span></li>
+					<li class="list-group-item"><span class="fw-bold">Timezone: </span><span id="timezone"></span></li>
+					<li class="list-group-item"><span class="fw-bold">Wind speed: </span><span id="windspeed"></span></li>
+					<li class="list-group-item"><span class="fw-bold">Wikipedia: </span><a id="wikipedia" target="_blank">link</a></li>
+				  </ul>
+	
+			</div>
+		</div>
+		<div class="modal-footer">
+		  <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>		  
+		</div>
+	  </div>
+	</div>
+  </div>
+
+
+		<script type="application/javascript" src="libs/js/jquery-2.2.3.min.js"></script>
+		<script src="libs/bootstrap/js/bootstrap.min.js"></script>		
+		
+		<script src="libs/js/leaflet.awesome-markers.js"></script>
+		<!-- easybutton js file -->
+		<script src="libs/js/easy-button.js"></script>
+
+		<script type="application/javascript" src="libs/js/script.js"></script>		
+		<script>
+
+
+
+		</script>
+
+	</body>
+
+</html>
