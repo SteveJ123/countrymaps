@@ -19,10 +19,10 @@
 
 $('body').append('<div style="" id="loadingDiv"><div class="loader">Loading...</div></div>');
 $(window).on('load', function () {
-	setTimeout(removeLoader, 3000); //wait for page load PLUS two seconds.
+	setTimeout(removeLoader, 8000); //wait for page load PLUS two seconds.
 });
 function removeLoader() {
-	$("#loadingDiv").fadeOut(3000, function () {
+	$("#loadingDiv").fadeOut(8000, function () {
 		// fadeOut complete. Remove the loading div
 		$("#loadingDiv").remove(); //makes page more lightweight 
 	});
@@ -48,6 +48,16 @@ var allCountriesDetails;
 var latitude = 51.5085;
 var longitude = -0.1257;
 var citiesOfSelectedCountry;
+
+var myIcon = L.icon({
+    iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png',
+    iconSize: [38, 95],
+    iconAnchor: [22, 94],
+    popupAnchor: [-3, -76],
+    shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+    shadowSize: [68, 95],
+    shadowAnchor: [22, 94]
+});
 
 // Creates a red marker with the coffee icon
 //  var redMarker = L.AwesomeMarkers.icon({
@@ -411,6 +421,8 @@ function getCitiesOfCounrySelected(countryValue){
 				console.log("citiesOfSelectedCountry", citiesOfSelectedCountry);
 				let countryCities = citiesOfSelectedCountry.geonames;
 
+				markers = L.markerClusterGroup();
+
 				for (let i = 0; i < 10; i++) {
 					let lan = countryCities[i].lng;
 					let lat = countryCities[i].lat;
@@ -423,9 +435,11 @@ function getCitiesOfCounrySelected(countryValue){
 								.setLatLng([lat, lan])
 								.setContent(`<p>Country: ${country} </p><p>City: ${countryCities[i].toponymName} </p>`)
 								.openOn(map);
-						});;
+						});
+						markers.addLayer(marker);
 				}
-
+				
+				map.addLayer(markers);
 
 				// countryBordersHighlight();
 				// document.getElementById("country").innerHTML = country;
@@ -465,7 +479,7 @@ function findAddress(selectedValue) {
 	//   }
 
 	//   console.log("countrySelected", allCountriesDetails[1]);
-	getCitiesOfCounrySelected(selectedValue);
+	
 
 	country;
 	console.log(allCountriesDetails); 
@@ -545,7 +559,7 @@ function findAddress(selectedValue) {
 	// 			});;
 	// }
 
-	L.marker([latitude, longitude]).addTo(map).on("click", function (event) {
+	L.marker([latitude, longitude], {icon: myIcon}).addTo(map).on("click", function (event) {
 		// var clickedMarker = event.layer;
 		// do some stuff…
 		L.popup()
@@ -553,6 +567,9 @@ function findAddress(selectedValue) {
 			.setContent(`<p>Country: ${country} </p><p>City: ${countryCapital} </p>`)
 			.openOn(map);
 	});
+
+	getCitiesOfCounrySelected(selectedValue);
+
 	geojsonLayer = L.geoJSON(data, {
 		style: {
 			fillColor: 'blue',
@@ -562,7 +579,7 @@ function findAddress(selectedValue) {
 			fillOpacity: 0.7
 		}
 	}).addTo(map);
-
+	
 
 
 

@@ -11,13 +11,13 @@ ANG: 2.046811
 ----Remove the Navbar, Home, Services, Contact Us, About US links from the navbar, you’re not using them.
 ----Format the displayed info properly, large numbers should have commas separating the digits every thousandth e.g 1,000,000. Things like temperature should have units attached, e.g 32 degrees Celsius
 ----You do not have currency or Wikipedia info for the selected country, those were part of the minimum data required.
-Your markers should have popups bound to them so when a user clicks on the marker they can find out info about what the marker represents.
+----Your markers should have popups bound to them so when a user clicks on the marker they can find out info about what the marker represents.
 Your markers should be styled using one of L.icon, the the extra markers leaflet plugin or the awesome markers plugin.
-Your markers should be clustered for each selected country using the leaflet marker cluster plugin.
+---Your markers should be clustered for each selected country using the leaflet marker cluster plugin.
 Instead of making ajax calls for each selected country, you are caching data in global variables. That is not good practice.
 ----The Launch country details button should be a leaflet easybutton.
-The user country (selected via geolocation) must also have markers shown on the country and not just the border highlighting.
-You are creating your markers using the polygons for the selected country hence your markers are all on the border. I how you understand why that is wrong. Your markers don’t represent any locations inside the country, just random points on the border.
+----The user country (selected via geolocation) must also have markers shown on the country and not just the border highlighting.
+----You are creating your markers using the polygons for the selected country hence your markers are all on the border. I how you understand why that is wrong. Your markers don’t represent any locations inside the country, just random points on the border.
 
 L icon markers
 https://github.com/lennardv2/Leaflet.awesome-markers
@@ -30,3 +30,9 @@ The Leaflet Plugins | #EasyButton #Sidebar | #WebGIS | GIS Data on Dashboard wit
 
 city in country API
 http://api.geonames.org/searchJSON?country=IN&username=janardhan1234
+
+leaflet cluster
+https://www.youtube.com/watch?v=1agYCD6U_HQ&ab_channel=GIS%26ITTools
+
+L.icon
+https://github.com/pointhi/leaflet-color-markers
