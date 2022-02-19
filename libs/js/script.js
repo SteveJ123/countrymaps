@@ -47,6 +47,7 @@ var allCountriesDetails;
 
 var latitude = 51.5085;
 var longitude = -0.1257;
+var citiesOfSelectedCountry;
 
 // Creates a red marker with the coffee icon
 //  var redMarker = L.AwesomeMarkers.icon({
@@ -63,6 +64,7 @@ var longitude = -0.1257;
 
 
 function countryAllDetails() {
+	console.log("countryAllDetails function called")
 	$.ajax({
 		url: "libs/php/getAllCountriesDetails.php",
 		type: 'POST',
@@ -85,7 +87,7 @@ function countryAllDetails() {
 			//   }
 
 			//   console.log("countrySelected", data)
-
+			console.log("countryAllDetails function called result", result);
 			if (result.status.name == "ok") {
 				console.log("result country details", result.data);
 				allCountriesDetails = result.data;
@@ -116,6 +118,7 @@ function countryAllDetails() {
 }
 
 countryAllDetails();
+
 
 function getCountryListDropdown() {
 	$.ajax({
@@ -377,6 +380,79 @@ function getSelectedCountryInfo(selectedCountry) {
 	}
 }
 
+function getCitiesOfCounrySelected(countryValue){
+	$.ajax({
+		url: "libs/php/getCitiesOfCountry.php",
+		type: 'POST',
+		dataType: 'json',
+		data: {
+			country: countryValue, //dropdown you selected country
+		
+		},
+		success: function (result) {
+
+			// console.log("result country details", result);
+			// country = result.data.country;
+			// console.log("country selected", country);
+
+			// for (var i = 0; i < countryBorders.features.length; i++) {
+			// 	// Do stuff with arr[i] or i
+			// 	if(countryBorders.features[i].properties.name === country){
+			// 		data.features.push(countryBorders.features[i]);
+			// 	}
+			//   }
+
+			//   console.log("countrySelected", data)
+
+			if (result.status.name == "ok") {
+				console.log("country selected cities", result.data);
+				citiesOfSelectedCountry = result.data;
+
+				console.log("citiesOfSelectedCountry", citiesOfSelectedCountry);
+				let countryCities = citiesOfSelectedCountry.geonames;
+
+				for (let i = 0; i < 10; i++) {
+					let lan = countryCities[i].lng;
+					let lat = countryCities[i].lat;
+					console.log("lat lan", lat, lan);
+					marker = new L.marker([lat, lan])
+						.addTo(map).on("click", function (event) {
+							// var clickedMarker = event.layer;
+							// do some stuff…
+							L.popup()
+								.setLatLng([lat, lan])
+								.setContent(`<p>Country: ${country} </p><p>City: ${countryCities[i].toponymName} </p>`)
+								.openOn(map);
+						});;
+				}
+
+
+				// countryBordersHighlight();
+				// document.getElementById("country").innerHTML = country;
+				// document.getElementById("temperature").innerHTML = result.data.main.temp;
+				// document.getElementById("timezone").innerHTML = result.data.timezone;
+				// document.getElementById("windspeed").innerHTML = result.data.wind.speed;
+				// $('#temperature').html(result.data.main.temp);
+
+				// $('#txtContinent').html(result['data'][0]['continent']);
+				// $('#txtCapital').html(result['data'][0]['capital']);
+				// $('#txtLanguages').html(result['data'][0]['languages']);
+				// $('#txtPopulation').html(result['data'][0]['population']);
+				// $('#txtArea').html(result['data'][0]['areaInSqKm']);
+				// lat = result.data.lat;
+				// lon = result.data.lon;
+				getSelectedCountryInfo(country);
+
+
+			}
+
+		},
+		error: function (jqXHR, textStatus, errorThrown) {
+			// your error code
+		}
+	});
+}
+
 function findAddress(selectedValue) {
 	console.log("selected value", selectedValue);
 	// var latitude = 51.5085;
@@ -389,8 +465,10 @@ function findAddress(selectedValue) {
 	//   }
 
 	//   console.log("countrySelected", allCountriesDetails[1]);
+	getCitiesOfCounrySelected(selectedValue);
 
 	country;
+	console.log(allCountriesDetails); 
 
 	for (var i = 0; i < allCountriesDetails.length; i++) {
 
@@ -431,25 +509,41 @@ function findAddress(selectedValue) {
 		attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
 	}).addTo(map);
 
-	if (countryCoordinates.length === 1) {
-		console.log("country coordinates value", countryCoordinates[0])
-		for (let i = 0; i < 5; i++) {
-			let lan = countryCoordinates[0][i][0];
-			let lat = countryCoordinates[0][i][1];
-			console.log("lat lan", lat, lan);
-			marker = new L.marker([lat, lan])
-				.addTo(map);
-		}
-	} else {
-		for (let i = 0; i < 10; i++) {
-			let lan = countryCoordinates[i][0];
-			let lat = countryCoordinates[i][1];
-			console.log("lat lan", lat, lan);
-			marker = new L.marker([lat, lan])
-				.addTo(map);
-		}
-	}
+	// if (countryCoordinates.length === 1) {
+	// 	console.log("country coordinates value", countryCoordinates[0])
+	// 	for (let i = 0; i < 5; i++) {
+	// 		let lan = countryCoordinates[0][i][0];
+	// 		let lat = countryCoordinates[0][i][1];
+	// 		console.log("lat lan", lat, lan);
+	// 		marker = new L.marker([lat, lan])
+	// 			.addTo(map);
+	// 	}
+	// } else {
+	// 	for (let i = 0; i < 10; i++) {
+	// 		let lan = countryCoordinates[i][0];
+	// 		let lat = countryCoordinates[i][1];
+	// 		console.log("lat lan", lat, lan);
+	// 		marker = new L.marker([lat, lan])
+	// 			.addTo(map);
+	// 	}
+	// }
+	// console.log("citiesOfSelectedCountry", citiesOfSelectedCountry);
+	// let countryCities = citiesOfSelectedCountry.geonames;
 
+	// for(let i = 0; i< 10; i++){
+	// 	let lan = countryCities[i].lng;
+	// 		let lat = countryCities[i].lat;
+	// 		console.log("lat lan", lat, lan);
+	// 		marker = new L.marker([lat, lan])
+	// 			.addTo(map).on("click", function (event) {
+	// 				// var clickedMarker = event.layer;
+	// 				// do some stuff…
+	// 				L.popup()
+	// 					.setLatLng([lat, lan])
+	// 					.setContent(`<p>Country: ${country} </p><p>City: ${countryCities[i].toponymName} </p>`)
+	// 					.openOn(map);
+	// 			});;
+	// }
 
 	L.marker([latitude, longitude]).addTo(map).on("click", function (event) {
 		// var clickedMarker = event.layer;

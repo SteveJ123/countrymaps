@@ -27,3 +27,6 @@ easy button
 https://github.com/CliffCloud/Leaflet.EasyButton
 http://danielmontague.com/projects/easyButton.js/v2/examples/
 The Leaflet Plugins | #EasyButton #Sidebar | #WebGIS | GIS Data on Dashboard with #Leaflet API | #8 -  https://www.youtube.com/watch?v=QlEBRTiK96g&ab_channel=GIS%26ITTools
+
+city in country API
+http://api.geonames.org/searchJSON?country=IN&username=janardhan1234
